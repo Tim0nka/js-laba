@@ -198,8 +198,11 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let top = '┌' + '─'.repeat(width - 2) + '┐\n';
+  let middle = '│' + ' '.repeat(width - 2) + '│\n';
+  let bottom = '└' + '─'.repeat(width - 2) + '┘\n';
+  return top + middle.repeat(height - 2) + bottom;
 }
 
 /**
@@ -218,8 +221,11 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str.replace(/[A-Za-z]/g, (char) => {
+    let base = char <= 'Z' ? 65 : 97;
+    return String.fromCharCode(((char.charCodeAt(0) - base + 13) % 26) + base);
+  });
 }
 
 /**
@@ -235,9 +241,10 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
+
 
 /**
  * Returns playid card id.
@@ -263,8 +270,17 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  let ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+  let suits = ['♣', '♦', '♥', '♠'];
+
+  let rank = value.slice(0, value.length - 1);
+  let suit = value.slice(-1);
+
+  let rankIndex = ranks.indexOf(rank);
+  let suitIndex = suits.indexOf(suit);
+
+  return suitIndex * ranks.length + rankIndex;
 }
 
 module.exports = {
