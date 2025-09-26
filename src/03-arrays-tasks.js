@@ -66,7 +66,7 @@ function doubleArray(arr) {
  *    [] => []
  */
 function getArrayOfPositives(arr) {
-  return arr.filter(num => num > 0);
+  return arr.filter((num) => num > 0);
 }
 
 /**
@@ -81,7 +81,7 @@ function getArrayOfPositives(arr) {
  *    [ 'cat, 'dog', 'raccoon' ] => [ 'cat', 'dog', 'raccoon' ]
  */
 function getArrayOfStrings(arr) {
-  return arr.filter(item => typeof item === 'string');
+  return arr.filter((item) => typeof item === 'string');
 }
 
 /**
@@ -113,7 +113,7 @@ function removeFalsyValues(arr) {
  *    [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ]  => [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ]
  */
 function getUpperCaseStrings(arr) {
-  return arr.map(str => str.toUpperCase());
+  return arr.map((str) => str.toUpperCase());
 }
 
 /**
@@ -127,7 +127,7 @@ function getUpperCaseStrings(arr) {
  *    [ 'angular', 'react', 'ember' ] => [ 7, 5, 5 ]
  */
 function getStringsLength(arr) {
-  return arr.map(str => str.length);
+  return arr.map((str) => str.length);
 }
 
 /**
@@ -195,7 +195,7 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  return arr.map(row => row.join(',')).join('\n');
+  return arr.map((row) => row.join(',')).join('\n');
 }
 
 /**
@@ -210,7 +210,7 @@ function toCsvText(arr) {
  *   [ 10, 100, -1 ]      => [ 100, 10000, 1 ]
  */
 function toArrayOfSquares(arr) {
-  return arr.map(num => num * num);
+  return arr.map((num) => num * num);
 }
 
 /**
@@ -229,7 +229,10 @@ function toArrayOfSquares(arr) {
  */
 function getMovingSum(arr) {
   let sum = 0;
-  return arr.map(num => sum += num);
+  return arr.map((num) => {
+    sum += num;
+    return sum;
+  });
 }
 
 /**
@@ -296,7 +299,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.filter(item => typeof item === 'number' && item > 0).length;
+  return arr.filter((item) => typeof item === 'number' && item > 0).length;
 }
 
 /**
@@ -314,8 +317,16 @@ function getPositivesCount(arr) {
  */
 function sortDigitNamesByNumericOrder(arr) {
   const digitMap = {
-    'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4,
-    'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9
+    zero: 0,
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
   };
   return arr.sort((a, b) => digitMap[a] - digitMap[b]);
 }
@@ -349,7 +360,7 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ] => 6
  */
 function getFalsyValuesCount(arr) {
-  return arr.filter(item => !item).length;
+  return arr.filter((item) => !item).length;
 }
 
 /**
@@ -367,7 +378,7 @@ function getFalsyValuesCount(arr) {
  *    [ true, 0, 1, 'true' ], true => 1
  */
 function findAllOccurrences(arr, item) {
-  return arr.filter(i => i === item).length;
+  return arr.filter((i) => i === item).length;
 }
 
 /**
@@ -437,8 +448,8 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  return Array.from({ length: n }, (_, i) => 
-    Array.from({ length: n }, (_, j) => i === j ? 1 : 0)
+  return Array.from({ length: n }, (_, i) =>
+    Array.from({ length: n }, (__, j) => (i === j ? 1 : 0))
   );
 }
 
@@ -506,16 +517,13 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-  const map = new Map();
-  array.forEach(item => {
+  return array.reduce((map, item) => {
     const key = keySelector(item);
     const value = valueSelector(item);
-    if (!map.has(key)) {
-      map.set(key, []);
-    }
-    map.get(key).push(value);
-  });
-  return map;
+    const values = map.get(key) || [];
+    map.set(key, [...values, value]);
+    return map;
+  }, new Map());
 }
 
 /**
@@ -567,10 +575,13 @@ function getElementByIndexes(arr, indexes) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ] => [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  */
 function swapHeadAndTail(arr) {
+  if (arr.length <= 1) return arr;
+
   const mid = Math.floor(arr.length / 2);
   const head = arr.slice(0, mid);
   const tail = arr.slice(-mid);
   const middle = arr.length % 2 === 1 ? [arr[mid]] : [];
+
   return [...tail, ...middle, ...head];
 }
 
